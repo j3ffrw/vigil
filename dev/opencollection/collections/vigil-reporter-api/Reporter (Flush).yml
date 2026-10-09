@@ -6,9 +6,7 @@ info:
 http:
   method: DELETE
   url: "{{endpoint}}/reporter/{{probe_id}}/{{node_id}}/{{replica_id}}/"
-  auth:
-    type: basic
-    password: "{{token}}"
+  auth: inherit
 
 settings:
   encodeUrl: true
