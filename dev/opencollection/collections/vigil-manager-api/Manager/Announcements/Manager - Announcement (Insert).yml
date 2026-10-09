@@ -1,0 +1,26 @@
+info:
+  name: Manager / Announcement (Insert)
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{endpoint}}/manager/announcement"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Scheduled file storage maintenance on 4th July, 4:30pm CET",
+        "text": "Crisp file storage system needs to be migrated to a new, more modern, file storage system.\nImage files served over Crisp helpdesks, as well as uploads, will be offline for 20-30 minutes."
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: false
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

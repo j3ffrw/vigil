@@ -1,0 +1,18 @@
+info:
+  name: Reporter (Flush)
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{endpoint}}/reporter/{{probe_id}}/{{node_id}}/{{replica_id}}/"
+  auth:
+    type: basic
+    password: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: false
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

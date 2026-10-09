@@ -1,0 +1,30 @@
+info:
+  name: Reporter (Report)
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{endpoint}}/reporter/{{probe_id}}/{{node_id}}/"
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "replica": "192.168.1.4",
+        "interval": 5,
+        "load": {
+          "cpu": 0.30,
+          "ram": 0.80
+        }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: false
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

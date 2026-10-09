@@ -1,0 +1,14 @@
+opencollection: 1.0.0
+info:
+  name: "vigil"
+  type: workspace
+
+collections:
+  - name: "Vigil Reporter API"
+    path: "collections/vigil-reporter-api"
+  - name: "Vigil Manager API"
+    path: "collections/vigil-manager-api"
+
+specs:
+
+docs: ''

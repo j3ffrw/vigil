@@ -1,0 +1,10 @@
+info:
+  name: Announcements
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+  variables:
+    - name: announcement_id
+      value: e7678634-18c2-437f-8dda-1ca781824b8e

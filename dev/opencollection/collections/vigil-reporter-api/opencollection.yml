@@ -1,0 +1,34 @@
+opencollection: 1.0.0
+
+info:
+  name: Vigil Reporter API
+  version: v1
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: basic
+    password: "{{auth_token}}"
+  variables:
+    - name: probe_id
+      value: relay
+    - name: node_id
+      value: socket-client
+    - name: replica_id
+      value: 192.168.1.4
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

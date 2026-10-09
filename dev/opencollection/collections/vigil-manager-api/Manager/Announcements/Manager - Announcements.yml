@@ -1,0 +1,16 @@
+info:
+  name: Manager / Announcements
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{endpoint}}/manager/announcements"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: false
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
