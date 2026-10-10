@@ -6,9 +6,6 @@ info:
 http:
   method: PUT
   url: "{{endpoint}}/manager/prober/alerts/ignored"
-  headers:
-    - name: Content-Type
-      value: application/json
   body:
     type: json
     data: |-

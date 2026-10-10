@@ -6,9 +6,6 @@ info:
 http:
   method: POST
   url: "{{endpoint}}/reporter/{{probe_id}}/{{node_id}}/"
-  headers:
-    - name: Content-Type
-      value: application/json
   body:
     type: json
     data: |-
