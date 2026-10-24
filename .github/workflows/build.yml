@@ -7,7 +7,11 @@ name: Build and Release
 
 jobs:
   build-releases:
+    if: github.repository == 'j3ffrw/vigil'
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     outputs:
       tag: ${{ steps.current_tag.outputs.tag }}
@@ -15,6 +19,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Ensure tag belongs to build/armv7
+        run: |
+          git fetch origin build/armv7
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/build/armv7
 
       - name: Cache build artifacts
         id: cache-cargo
@@ -43,10 +54,11 @@ jobs:
         id: current_tag
         uses: WyriHaximus/github-action-get-previous-tag@v1
 
-      - name: Release package
-        run: cargo publish --no-verify --token ${CRATES_TOKEN}
-        env:
-          CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
+      # Disabled in this fork (crate is published by upstream)
+      # - name: Release package
+      #   run: cargo publish --no-verify --token ${CRATES_TOKEN}
+      #   env:
+      #     CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
 
       - name: Release binaries
         run: ./scripts/release_binaries.sh --version=${{ steps.current_tag.outputs.tag }}
@@ -61,26 +73,28 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build-packages:
-    needs: build-releases
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Build packages
-        run: ./scripts/build_packages.sh
-
-      - name: Push packages to Packagecloud
-        uses: faucetsdn/action-packagecloud-upload-debian-packages@v1
-        with:
-          path: ./packages
-          repo: ${{ secrets.PACKAGECLOUD_REPO }}
-          token: ${{ secrets.PACKAGECLOUD_TOKEN }}
+  # Disabled in this fork (x86_64 .deb packages for Packagecloud)
+  # build-packages:
+  #   needs: build-releases
+  #   runs-on: ubuntu-latest
+  #
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #
+  #     - name: Build packages
+  #       run: ./scripts/build_packages.sh
+  #
+  #     - name: Push packages to Packagecloud
+  #       uses: faucetsdn/action-packagecloud-upload-debian-packages@v1
+  #       with:
+  #         path: ./packages
+  #         repo: ${{ secrets.PACKAGECLOUD_REPO }}
+  #         token: ${{ secrets.PACKAGECLOUD_TOKEN }}
 
   build-docker:
     needs: build-releases
+    if: github.repository == 'j3ffrw/vigil'
     runs-on: ubuntu-latest
 
     steps:
@@ -91,7 +105,7 @@ jobs:
         id: metadata
         uses: docker/metadata-action@v4
         with:
-          images: valeriansaliou/vigil
+          images: j3ffrw/vigil
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -114,6 +128,6 @@ jobs:
           push: true
           build-args: |
             PREBUILT_TAG=${{ needs.build-releases.outputs.tag }}
+            PREBUILT_REPO=${{ github.repository }}
           platforms: |
-            linux/amd64
-            linux/arm64
+            linux/arm/v7
